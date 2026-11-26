@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>glyna.papir</title>
+  <meta name="description" content="glyna.papir — крамниця речей з історією та культурним сенсом: кераміка, книги, листівки, графіка.">
+  <link rel="icon" href="images/logo.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Manrope:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap">
+  <style>
+/* Layout: теплий папір із зерном і м'якими плямами кольорів логотипу; великий логотип-сонце в першому екрані, стрічка категорій, сітка фото-карток, кроки покупки, контакти */
+:root{
+  color-scheme:light;
+  --cream:#FCF8EC; --paper:#FFFDF6; --sand:#EFE6D2;
+  --choc:#3A2820; --choc-2:#5B4337; --muted:#7A6A5E;
+  --tomato:#C93A2B; --mustard:#D8A93E; --line:#E3D8C2;
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --accent:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+img{max-width:100%}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--choc);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--tomato);outline-offset:3px}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+h1,h2,h3{margin:0;text-wrap:balance}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--tomato)}
+em.acc{font-family:var(--accent);font-style:italic;font-weight:600;letter-spacing:0}
+
+/* ---- фон: зерно паперу + плями кольорів ---- */
+.bg{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;background:
+  radial-gradient(42vmax 42vmax at 92% 6%, rgba(216,169,62,.30), transparent 62%),
+  radial-gradient(38vmax 38vmax at 0% 78%, rgba(201,58,43,.13), transparent 60%),
+  radial-gradient(30vmax 30vmax at 55% 110%, rgba(91,67,55,.12), transparent 60%),
+  var(--cream)}
+.bg::after{content:"";position:absolute;inset:-50%;opacity:.5;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .25 0 0 0 0 .18 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ---- шапка ---- */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--cream)}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:rgba(252,248,236,.78);border-bottom:1px solid rgba(58,40,32,.08)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:10px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand img{width:42px;height:42px;border-radius:50%;box-shadow:0 0 0 1px var(--line)}
+.brand span{font-family:var(--display);font-weight:600;font-size:17px;letter-spacing:-.01em}
+nav{display:flex;align-items:center;gap:22px}
+nav a{text-decoration:none;font-weight:600;font-size:14px}
+nav a:hover{color:var(--tomato)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:700 15px var(--body);padding:13px 24px;border-radius:999px;border:1.5px solid var(--choc);background:var(--choc);color:var(--cream);text-decoration:none;cursor:pointer;transition:transform .2s,background .2s}
+.btn:hover{transform:translateY(-2px);background:var(--tomato);border-color:var(--tomato)}
+.btn.ghost{background:transparent;color:var(--choc)}
+.btn.ghost:hover{background:var(--choc);color:var(--cream);border-color:var(--choc)}
+.btn.sm{padding:9px 16px;font-size:13px}
+.btn svg{width:18px;height:18px}
+
+/* ---- перший екран ---- */
+.hero .wrap{display:grid;grid-template-columns:1.15fr 1fr;gap:40px;align-items:center;padding-block:64px 72px}
+.hero h1{font-family:var(--display);font-weight:800;font-size:clamp(36px,5.6vw,72px);line-height:1.02;letter-spacing:-.035em;margin-top:18px}
+.hero h1 em.acc{font-size:1.12em;color:var(--tomato);font-weight:600}
+.hero p{font-size:19px;color:var(--choc-2);max-width:30em;margin:22px 0 32px}
+.cta{display:flex;gap:12px;flex-wrap:wrap}
+.cats{display:flex;gap:8px;flex-wrap:wrap;margin-top:34px}
+.cats span{font-size:13px;font-weight:600;padding:6px 14px;border-radius:999px;background:rgba(255,253,246,.7);border:1px solid var(--line)}
+.sun{position:relative;width:min(440px,100%);aspect-ratio:1;justify-self:center}
+.sun svg.ring{position:absolute;inset:0;width:100%;height:100%;animation:spin 80s linear infinite}
+.sun img{position:absolute;inset:11%;width:78%;height:78%;border-radius:50%;box-shadow:0 30px 60px -20px rgba(58,40,32,.35),0 0 0 8px var(--paper)}
+.sun .badge{position:absolute;right:2%;bottom:10%;background:var(--mustard);color:var(--choc);font-family:var(--display);font-weight:600;font-size:13px;line-height:1.2;padding:14px 16px;border-radius:50%;width:104px;height:104px;display:grid;place-items:center;text-align:center;transform:rotate(-10deg);box-shadow:0 10px 24px -10px rgba(58,40,32,.4)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ---- стрічка ---- */
+.band{background:var(--choc);color:var(--cream);overflow:hidden;transform:rotate(-1.2deg);margin-inline:-20px}
+.band .track{display:flex;width:max-content;animation:run 32s linear infinite}
+.band span{font-family:var(--display);font-weight:600;font-size:clamp(18px,2.4vw,28px);padding:16px 26px;white-space:nowrap;display:flex;align-items:center;gap:26px}
+.band span::after{content:"";width:12px;height:12px;border-radius:50%;background:var(--mustard)}
+.band span:nth-child(3n+2)::after{background:var(--tomato)}
+@keyframes run{to{transform:translateX(-50%)}}
+
+/* ---- каталог ---- */
+section{padding-block:80px}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:20px 32px;flex-wrap:wrap;margin-bottom:36px}
+.sec-head h2,.h2{font-family:var(--display);font-weight:800;font-size:clamp(30px,4vw,50px);letter-spacing:-.03em;line-height:1.05;margin-top:10px}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.filters button{font:600 14px var(--body);padding:9px 18px;border-radius:999px;border:1.5px solid var(--choc);background:transparent;color:var(--choc);cursor:pointer;transition:background .2s,color .2s}
+.filters button:hover{background:rgba(58,40,32,.07)}
+.filters button[aria-pressed="true"]{background:var(--choc);color:var(--cream)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:30px 24px}
+.card{display:flex;flex-direction:column;background:var(--paper);border-radius:22px;overflow:hidden;box-shadow:0 1px 0 var(--line),0 18px 40px -28px rgba(58,40,32,.45);transition:transform .3s,box-shadow .3s;min-width:0}
+.card:hover{transform:translateY(-6px);box-shadow:0 1px 0 var(--line),0 28px 50px -26px rgba(58,40,32,.55)}
+.card .pic{position:relative;display:block;width:100%;aspect-ratio:4/5;max-width:100%;padding:0;border:0;cursor:pointer;background:var(--sand);overflow:hidden}
+.card .pic img,.card .pic svg{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s}
+.card:hover .pic img,.card:hover .pic svg{transform:scale(1.04)}
+.chip{position:absolute;top:14px;left:14px;font-size:12px;font-weight:700;padding:5px 12px;border-radius:999px;background:rgba(255,253,246,.92);color:var(--choc)}
+.chip.sold{left:auto;right:14px;background:var(--tomato);color:var(--paper)}
+.card .body{padding:18px 20px 20px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card h3{font-family:var(--display);font-weight:600;font-size:17px;line-height:1.25;letter-spacing:-.01em}
+.card .sub{margin:0;color:var(--muted);font-size:14px}
+.card .row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:auto;padding-top:14px}
+.price{font-family:var(--display);font-weight:600;font-size:17px;font-variant-numeric:tabular-nums}
+.price.ask-price{font-family:var(--body);font-size:14px;color:var(--muted);font-weight:600}
+.card.sold .price{text-decoration:line-through;color:var(--muted)}
+.more{font:700 14px var(--body);background:var(--mustard);color:var(--choc);border:0;border-radius:999px;padding:9px 16px;cursor:pointer;transition:background .2s,color .2s}
+.more:hover{background:var(--tomato);color:var(--paper)}
+
+/* ---- як купити ---- */
+.how .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.step{background:rgba(255,253,246,.75);border:1px solid var(--line);border-radius:22px;padding:28px}
+.step b{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--tomato);color:var(--paper);font-family:var(--display);font-size:18px;margin-bottom:18px}
+.step:nth-child(2) b{background:var(--mustard);color:var(--choc)}
+.step:nth-child(3) b{background:var(--choc)}
+.step h3{font-family:var(--display);font-weight:600;font-size:19px;margin-bottom:8px}
+.step p{margin:0;color:var(--choc-2)}
+
+/* ---- про нас / контакти ---- */
+.about{background:var(--choc);color:var(--cream);border-radius:36px;margin-inline:max(10px,env(safe-area-inset-left,0px))}
+.about .wrap{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;align-items:center}
+.about .eyebrow{color:var(--mustard)}
+.about p{color:#E9DFCC;font-size:18px;max-width:32em}
+.about .h2 em.acc{color:var(--mustard)}
+.contacts{display:grid;gap:12px}
+.contact{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 20px;border-radius:18px;background:rgba(255,253,246,.07);border:1px solid rgba(255,253,246,.14);flex-wrap:wrap}
+.contact .k{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--mustard)}
+.contact a{font-weight:700;font-size:17px;text-decoration:none;word-break:break-all}
+.contact a:hover{color:var(--mustard)}
+.copy{font:600 13px var(--body);border:1px solid rgba(255,253,246,.3);background:transparent;color:var(--cream);padding:6px 14px;border-radius:999px;cursor:pointer}
+.copy:hover{background:var(--cream);color:var(--choc)}
+footer{padding-block:36px;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+footer .brand img{width:32px;height:32px}
+footer .brand span{font-size:14px;color:var(--choc)}
+
+/* ---- вікно товару ---- */
+.modal{position:fixed;inset:0;z-index:20;background:rgba(40,26,20,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.sheet{position:relative;background:var(--paper);color:var(--choc);max-width:920px;width:100%;max-height:100%;overflow:auto;display:grid;grid-template-columns:1fr 1fr;border-radius:26px;box-shadow:0 40px 80px -30px rgba(0,0,0,.5)}
+.sheet .pic{background:var(--sand);min-height:280px}
+.sheet .pic img,.sheet .pic svg{width:100%;height:100%;object-fit:cover;display:block}
+.sheet .info{padding:32px 28px 28px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.sheet h3{font-family:var(--display);font-weight:600;font-size:26px;line-height:1.15;letter-spacing:-.02em;padding-right:36px}
+.specs{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0;font-size:15px}
+.specs dt{color:var(--muted)}
+.specs dd{margin:0}
+.close{position:absolute;top:14px;right:14px;width:40px;height:40px;border-radius:50%;border:0;background:var(--sand);font-size:24px;line-height:1;color:var(--choc);cursor:pointer;z-index:1}
+.close:hover{background:var(--mustard)}
+.msg{font-size:14px;background:var(--cream);border:1px dashed var(--line);border-radius:14px;padding:12px 14px}
+
+@media (max-width:860px){
+  .hero .wrap,.about .wrap,.sheet{grid-template-columns:1fr}
+  .hero .wrap{padding-block:36px 56px;gap:24px}
+  .sun{width:min(300px,82%);order:-1}
+  .how .steps{grid-template-columns:1fr}
+  nav a.hide-m{display:none}
+  .sheet .pic{aspect-ratio:4/3;min-height:0}
+}
+@media (max-width:520px){ nav{gap:14px} .brand span{font-size:15px} section{padding-block:60px} .about{border-radius:26px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+  </style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="images/logo.png" alt=""><span>glyna.papir</span></a>
+    <nav>
+      <a href="#catalog">Каталог</a>
+      <a class="hide-m" href="#how">Як купити</a>
+      <a class="hide-m" href="#about">Про нас</a>
+      <a class="btn sm" id="ig-top" href="#" target="_blank" rel="noopener">Instagram</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow">Кераміка · Книги · Листівки · Графіка</div>
+        <h1>Речі з&nbsp;<em class="acc">історією</em> та культурним сенсом</h1>
+        <p>Обирайте собі у спадок або подаруйте близьким. Авторська графіка, книги з мистецтва, кераміка та листівки, які хочеться зберігати.</p>
+        <div class="cta">
+          <a class="btn" href="#catalog">Дивитися каталог</a>
+          <a class="btn ghost" id="ig-hero" href="#" target="_blank" rel="noopener">Написати в Direct</a>
+        </div>
+        <div class="cats"><span>Графіка в рамах</span><span>Книги</span><span>Кераміка</span><span>Листівки</span></div>
+      </div>
+      <div class="sun">
+        <svg class="ring" viewBox="0 0 400 400" aria-hidden="true"><g id="ring"></g></svg>
+        <img src="images/logo.png" alt="Логотип glyna.papir">
+        <div class="badge">речі<br>у спадок</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="band" aria-hidden="true"><div class="track" id="track"></div></div>
+
+  <section id="catalog">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <div class="eyebrow">Каталог</div>
+          <h2>Зараз у&nbsp;крамниці</h2>
+        </div>
+        <div class="filters" id="filters" role="group" aria-label="Категорії"></div>
+      </div>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <section class="how" id="how">
+    <div class="wrap">
+      <div class="sec-head"><div><div class="eyebrow">Як купити</div><h2>Просто, як написати другу</h2></div></div>
+      <div class="steps">
+        <div class="step"><b>1</b><h3>Оберіть річ</h3><p>Натисніть «Детальніше» на картці й скопіюйте готове повідомлення з назвою товару.</p></div>
+        <div class="step"><b>2</b><h3>Напишіть у Direct</h3><p>Надішлемо більше фото, розміри та опис стану. Відкладемо річ, поки ви думаєте.</p></div>
+        <div class="step"><b>3</b><h3>Отримайте посилку</h3><p>Оплата на картку або накладений платіж. Відправляємо Новою поштою, ретельно пакуємо.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="wrap">
+      <div>
+        <div class="eyebrow">Про нас</div>
+        <h2 class="h2" style="margin-bottom:20px">Крамниця речей, які <em class="acc">варто передати</em> далі</h2>
+        <p>Ми збираємо графіку, книги з мистецтва, кераміку й листівки, у яких є історія та культурний сенс. Кожну річ оглядаємо, фотографуємо і чесно описуємо.</p>
+        <p>Шукаєте подарунок або щось конкретне? Напишіть нам, підберемо.</p>
+      </div>
+      <div>
+        <div class="contacts" id="contact-list"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="images/logo.png" alt=""><span>glyna.papir</span></a>
+    <span>© <span id="year"></span> · Кераміка, книги, листівки, графіка</span>
+  </div>
+</footer>
+
+<div class="modal" id="modal" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="m-title">
+    <button class="close" type="button" id="m-close" aria-label="Закрити">×</button>
+    <div class="pic" id="m-pic"></div>
+    <div class="info">
+      <div class="eyebrow" id="m-cat"></div>
+      <h3 id="m-title"></h3>
+      <dl class="specs" id="m-specs"></dl>
+      <div class="price" id="m-price" style="font-size:22px"></div>
+      <div class="msg" id="m-msg"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" type="button" id="m-copy">Скопіювати повідомлення</button>
+        <a class="btn ghost" id="m-ig" href="#" target="_blank" rel="noopener">Відкрити Direct</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   ВАШІ КОНТАКТИ
+   Порожні "" не показуються на сайті.
+   ============================================================ */
+const CONTACTS = {
+  instagram: "glyna.papir",
+  threads:   "glyna.papir",
+  telegram:  "",            // нік без @, напр. "glyna_papir"
+  phone:     "",            // напр. "+380 67 000 00 00"
+  email:     ""
+};
+
+/* ============================================================
+   ВАШІ ТОВАРИ
+   Щоб додати товар: скопіюйте один блок { ... }, і змініть текст.
+   cat:   "graphics" графіка, "books" книги, "ceramics" кераміка, "cards" листівки
+   photo: назва файлу фото, завантаженого на GitHub, напр. "vaza.jpg"
+   price: ціна числом, напр. 2400. Якщо поставити null, буде «Ціна в Direct»
+   year, size, state: можна залишити "" — тоді рядок не показується
+   sold:  true, якщо продано
+   ============================================================ */
+const ITEMS = [
+  {
+    id: "1",
+    cat: "graphics",
+    title: "Весна на Подолі",
+    author: "Борис Тулін",
+    year: "",
+    size: "У рамі 67 × 57 см, у паспарту 44 × 34 см",
+    state: "З серії «Сни у місячну ніч»",
+    price: null,
+    photo: "p1.jpg",
+    sold: false
+  },
+  {
+    id: "2",
+    cat: "graphics",
+    title: "Ангел",
+    author: "Стефанія Гебус-Баранецька",
+    year: "1938",
+    size: "",
+    state: "Офорт / графіка",
+    price: null,
+    photo: "p2.jpg",
+    sold: false
+  },
+  {
+    id: "3",
+    cat: "graphics",
+    title: "Графіка Богдана Сороки (триптих)",
+    author: "Богдан Сорока",
+    year: "1996–1998",
+    size: "У рамі 41 × 36,5 см",
+    state: "«Небезпечна надмірна цікавість», «Це для вибору», «Сліпий у виборі». Оксамитове паспарту, антиблікове скло",
+    price: null,
+    photo: "p3.jpg",
+    sold: false
+  },
+  {
+    id: "4",
+    cat: "books",
+    title: "Коломийки",
+    author: "Олена Кульчицька (дереворити)",
+    year: "",
+    size: "",
+    state: "Фольклорний збірник українських народних пісень з дереворитами Олени Кульчицької",
+    price: null,
+    photo: "p4.jpg",
+    sold: false
+  },
+  {
+    id: "5",
+    cat: "books",
+    title: "Альбом про Павліну Цвілик",
+    author: "Павліна Йосипівна Цвілик",
+    year: "1982",
+    size: "",
+    state: "Альбом присвячений творчості майстрині косівської школи мальованої кераміки",
+    price: null,
+    photo: "p5.jpg",
+    sold: false
+  },
+  {
+    id: "6",
+    cat: "graphics",
+    title: "Дерева в лісі",
+    author: "Дмитро Парута",
+    year: "1992",
+    size: "",
+    state: "Кольорова ліногравюра",
+    price: null,
+    photo: "p6.jpg",
+    sold: false
+  },
+  {
+    id: "7",
+    cat: "books",
+    title: "Народні таланти: нариси",
+    author: "Іван Корнієнко",
+    year: "1959",
+    size: "",
+    state: "Київ. Книга про майстрів українського народного мистецтва",
+    price: null,
+    photo: "p7.jpg",
+    sold: false
+  },
+  {
+    id: "8",
+    cat: "graphics",
+    title: "Paix",
+    author: "Олександр Данченко",
+    year: "1955",
+    size: "У паспарту 34 × 26 см, у рамі 49,5 × 47 см",
+    state: "Офорт. На аркуші є дарчий напис художника",
+    price: null,
+    photo: "p8.jpg",
+    sold: false
+  }
+];
+
+/* ============================================================
+   Далі код сайту, його можна не чіпати
+   ============================================================ */
+const CAT_NAMES = { graphics:"Графіка", books:"Книги", ceramics:"Кераміка", cards:"Листівки" };
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = n => n.toLocaleString("uk-UA").replace(/,/g," ") + " грн";
+const priceHTML = it => it.price ? `<span class="price">${fmt(it.price)}</span>` : `<span class="price ask-price">Ціна в Direct</span>`;
+const IG = `https://instagram.com/${CONTACTS.instagram}`;
+const IG_DM = `https://ig.me/m/${CONTACTS.instagram}`;
+
+function photoSrc(p){
+  // Спочатку шукаємо в images/, якщо немає — показуємо заглушку
+  return p ? `images/${p}` : null;
+}
+function pic(it){
+  if(it.photo) return `<img src="${esc(photoSrc(it.photo))}" alt="${esc(it.title)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <svg style="display:none" viewBox="0 0 400 500" aria-hidden="true"><rect width="400" height="500" fill="#EFE6D2"/><circle cx="200" cy="230" r="90" fill="#D8A93E"/><rect x="120" y="330" width="160" height="40" rx="20" fill="#3A2820" opacity=".15"/></svg>`;
+  return `<svg viewBox="0 0 400 500" aria-hidden="true"><rect width="400" height="500" fill="#EFE6D2"/><circle cx="200" cy="230" r="90" fill="#D8A93E"/><rect x="120" y="330" width="160" height="40" rx="20" fill="#3A2820" opacity=".15"/></svg>`;
+}
+
+let current = "all";
+function renderFilters(){
+  const cats = [...new Set(ITEMS.map(i => i.cat))].filter(c => CAT_NAMES[c]);
+  $("#filters").innerHTML = [["all","Усі"], ...cats.map(c => [c, CAT_NAMES[c]])]
+    .map(([c,n]) => `<button type="button" data-cat="${c}" aria-pressed="${c===current}">${n}</button>`).join("");
+}
+function render(){
+  const list = ITEMS.filter(it => current==="all" || it.cat===current);
+  $("#grid").innerHTML = list.map(it => `
+    <article class="card${it.sold?" sold":""}">
+      <button class="pic" type="button" data-id="${esc(it.id)}" aria-label="Детальніше: ${esc(it.title)}">
+        ${pic(it)}<span class="chip">${CAT_NAMES[it.cat]||""}</span>${it.sold?'<span class="chip sold">Продано</span>':""}
+      </button>
+      <div class="body">
+        <h3>${esc(it.title)}</h3>
+        ${[it.author,it.year].filter(Boolean).length?`<p class="sub">${esc([it.author,it.year].filter(Boolean).join(" · "))}</p>`:""}
+        <div class="row">${priceHTML(it)}${it.sold?"":`<button class="more" type="button" data-id="${esc(it.id)}">Детальніше</button>`}</div>
+      </div>
+    </article>`).join("");
+}
+$("#filters").addEventListener("click", e => {
+  const b = e.target.closest("button[data-cat]"); if(!b) return;
+  current = b.dataset.cat; renderFilters(); render();
+});
+
+function copyText(text, btn){
+  const done = () => { const o = btn.textContent; btn.textContent = "Скопійовано ✓"; setTimeout(() => btn.textContent = o, 1600); };
+  const fallback = () => { const t = document.createElement("textarea"); t.value = text; document.body.appendChild(t); t.select(); try{ document.execCommand("copy"); done(); }catch(e){} t.remove(); };
+  try { navigator.clipboard.writeText(text).then(done).catch(fallback); } catch(e){ fallback(); }
+}
+
+const modal = $("#modal");
+function openItem(id){
+  const it = ITEMS.find(i => i.id===id); if(!it) return;
+  $("#m-pic").innerHTML = pic(it);
+  $("#m-cat").textContent = (CAT_NAMES[it.cat]||"") + (it.sold ? " · Продано" : "");
+  $("#m-title").textContent = it.title;
+  const specs = [["Автор",it.author],["Рік",it.year],["Розмір",it.size],["Стан",it.state]].filter(([,v]) => v);
+  $("#m-specs").innerHTML = specs.map(([k,v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("");
+  $("#m-specs").hidden = !specs.length;
+  $("#m-price").innerHTML = priceHTML(it);
+  const msg = `Добрий день! Цікавить «${it.title}»${it.price ? " за " + fmt(it.price) : ""}. Ще доступно?`;
+  $("#m-msg").textContent = msg;
+  $("#m-copy").onclick = e => copyText(msg, e.currentTarget);
+  $("#m-ig").href = IG_DM;
+  modal.hidden = false; $("#m-close").focus();
+}
+const closeModal = () => { modal.hidden = true; };
+$("#grid").addEventListener("click", e => { const b = e.target.closest("[data-id]"); if(b) openItem(b.dataset.id); });
+$("#m-close").addEventListener("click", closeModal);
+modal.addEventListener("click", e => { if(e.target===modal) closeModal(); });
+document.addEventListener("keydown", e => { if(e.key==="Escape" && !modal.hidden) closeModal(); });
+
+$("#ig-top").href = IG; $("#ig-hero").href = IG_DM;
+const contacts = [
+  ["Instagram", CONTACTS.instagram && "@"+CONTACTS.instagram, IG],
+  ["Threads",   CONTACTS.threads && "@"+CONTACTS.threads, `https://www.threads.net/@${CONTACTS.threads}`],
+  ["Telegram",  CONTACTS.telegram && "@"+CONTACTS.telegram, `https://t.me/${CONTACTS.telegram}`],
+  ["Телефон",   CONTACTS.phone, `tel:${CONTACTS.phone.replace(/\s/g,"")}`],
+  ["Пошта",     CONTACTS.email, `mailto:${CONTACTS.email}`]
+].filter(c => c[1]);
+$("#contact-list").innerHTML = contacts.map(([k,v,h],i) => `
+  <div class="contact"><div><div class="k">${k}</div><a href="${h}" target="_blank" rel="noopener">${esc(v)}</a></div>
+  <button class="copy" type="button" data-i="${i}">Копіювати</button></div>`).join("");
+$("#contact-list").addEventListener("click", e => { const b = e.target.closest(".copy"); if(b) copyText(contacts[b.dataset.i][1], b); });
+
+/* стрічка та кільце навколо логотипа */
+const words = ["Кераміка","Книги","Листівки","Графіка","Речі з історією"];
+$("#track").innerHTML = [...words,...words,...words,...words].map(w => `<span>${w}</span>`).join("");
+(function(){
+  const ns = "http://www.w3.org/2000/svg", g = $("#ring");
+  for(let i=0;i<36;i++){
+    const c = document.createElementNS(ns,"circle");
+    c.setAttribute("cx",200); c.setAttribute("cy",12); c.setAttribute("r", i%3===0 ? 7 : 4);
+    c.setAttribute("fill", i%3===0 ? "#D8A93E" : (i%3===1 ? "#3A2820" : "#C93A2B"));
+    c.setAttribute("opacity", i%3===0 ? 1 : .55);
+    c.setAttribute("transform", `rotate(${i*10} 200 200)`); g.appendChild(c);
+  }
+})();
+
+$("#year").textContent = new Date().getFullYear();
+renderFilters(); render();
+</script>
+</body>
+</html>
